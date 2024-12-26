@@ -21,7 +21,18 @@ async function createCategory(categoryData) {
   }
 }
 
+async function getAllCategories() {
+    try {
+      const categoriesCollection = getCategoriesCollection();
+      return await categoriesCollection.find({}).toArray(); // Fetch all categories
+    } catch (error) {
+      console.error("Error getting all categories:", error);
+      throw new Error("Database query error");
+    }
+  }
+
 module.exports = {
   findCategoryByName,
   createCategory,
+  getAllCategories
 };

@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const categoryService = require("../services/categories.service");
 
+// Add a new category
 async function addCategory(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -33,6 +34,18 @@ async function addCategory(req, res) {
   }
 }
 
+// Get all categories
+async function getAllCategories(req, res) {
+  try {
+    const categories = await categoryService.getAllCategories();
+    return res.status(200).json({ categories });
+  } catch (error) {
+    console.error("Error in getAllCategories:", error);
+    return res.status(500).json({ message: "Server error while retrieving categories" });
+  }
+}
+
 module.exports = {
   addCategory,
+  getAllCategories,
 };
