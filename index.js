@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { connectToDatabase } = require("./config/db");
 const dotenv = require("dotenv");
-// const routes = require("./routes/index.routes");
+const routes = require("./routes/index.routes");
 
 dotenv.config();
 
@@ -14,9 +14,8 @@ app.use(express.json());
 
 connectToDatabase();
 
-// app.use("/", routes);
+app.use("/", routes);
 
 app.listen(port, () => {
   console.log(`SERVER RUNNING ON PORT ${port}`);
 });
-
