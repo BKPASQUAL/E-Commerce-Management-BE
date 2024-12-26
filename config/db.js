@@ -7,6 +7,7 @@ const uri = process.env.MONGODB_URI;
 let dbClient;
 let usersCollection;
 let categoriesCollection;
+let productCollection
 
 async function connectToDatabase() {
   try {
@@ -22,6 +23,7 @@ async function connectToDatabase() {
     const ecommercedb = dbClient.db("E-Commerce");
     usersCollection = ecommercedb.collection("users");
     categoriesCollection = ecommercedb.collection("categories");
+    productCollection = ecommercedb.collection("products");
 
     console.log("Successfully connected to MongoDB!");
   } catch (error) {
@@ -37,8 +39,13 @@ function getCategoriesCollection() {
   return categoriesCollection;
 }
 
+function getproductCollection() {
+  return productCollection;
+}
+
 module.exports = {
   connectToDatabase,
   getUsersCollection,
   getCategoriesCollection,
+  getproductCollection
 };
