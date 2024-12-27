@@ -21,17 +21,17 @@ async function createProduct(productData) {
   }
 }
 
-async function getAllProducts(params) {
-  try{
+async function getAllProducts() {
+  try {
     const productCollection = getproductCollection();
-    return await productCollection.find({}).toArray()
-  } catch(error){
-    console.error("Error getting all products:",error);
+    // Sort by createdAt in descending order
+    return await productCollection.find({}).sort({ createdAt: -1 }).toArray();
+  } catch (error) {
+    console.error("Error getting all products:", error);
     throw new Error("Database query error");
-
   }
-  
 }
+
 module.exports = {
   findProductByName,
   createProduct,
