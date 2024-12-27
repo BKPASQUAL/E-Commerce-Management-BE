@@ -55,11 +55,23 @@ async function updateProduct(productId, updateData) {
   }
 }
 
+async function deleteProduct(productId) {
+  try {
+    const productCollection = getproductCollection();
+    return await productCollection.deleteOne({ _id: new ObjectId(productId) });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw new Error("Database deletion error");
+  }
+}
+
+
 
 module.exports = {
   findProductByName,
   createProduct,
   getAllProducts,
   getProductById,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };

@@ -81,10 +81,27 @@ async function getAllProducts(req,res) {
     }
   }
   
+  async function deleteProduct(req, res) {
+    const { id } = req.params;
+  
+    try {
+      const result = await productService.deleteProduct(id);
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      return res.status(200).json({ message: "Product deleted successfully" });
+    } catch (error) {
+      console.error("Error in deleteProduct:", error);
+      return res.status(500).json({ message: "Server error while deleting product" });
+    }
+  }
+  
   
 module.exports = {
   addProduct,
   getAllProducts,
   getProductById,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };
