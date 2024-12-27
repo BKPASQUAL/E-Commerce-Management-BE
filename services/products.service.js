@@ -65,6 +65,16 @@ async function deleteProduct(productId) {
   }
 }
 
+async function getMinimumQuantityProducts() {
+  try {
+    const productCollection = getproductCollection();
+    // Fetch products sorted by quantity in ascending order and limit to 10
+    return await productCollection.find({}).sort({ quantity: 1 }).limit(10).toArray();
+  } catch (error) {
+    console.error("Error getting minimum quantity products:", error);
+    throw new Error("Database query error");
+  }
+}
 
 
 module.exports = {
@@ -73,5 +83,6 @@ module.exports = {
   getAllProducts,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getMinimumQuantityProducts
 };

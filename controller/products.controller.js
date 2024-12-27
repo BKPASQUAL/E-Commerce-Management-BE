@@ -8,7 +8,7 @@ async function addProduct(req, res) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { productName, productCode, mrp, sellingPrice, category, brand } = req.body;
+  const { productName, productCode, mrp, sellingPrice, category, brand ,quantity } = req.body;
 
   try {
     // Check if the product already exists
@@ -25,6 +25,7 @@ async function addProduct(req, res) {
       sellingPrice,
       category, 
       brand,
+      quantity,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -97,11 +98,22 @@ async function getAllProducts(req,res) {
     }
   }
   
+  async function getMinimumQuantityProducts(req, res) {
+    try {
+      const products = await productService.getMinimumQuantityProducts();
+      return res.status(200).json({ products });
+    } catch (error) {
+      console.error("Error in getMinimumQuantityProducts:", error);
+      return res.status(500).json({ message: "Server error while retrieving minimum quantity products" });
+    }
+  }
+
   
 module.exports = {
   addProduct,
   getAllProducts,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getMinimumQuantityProducts
 };
