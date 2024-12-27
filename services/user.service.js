@@ -33,8 +33,20 @@ async function getAllUsers(req, res) {
   }
 }
 
+async function getUserCount() {
+  try {
+    const usersCollection = getUsersCollection();
+    return await usersCollection.countDocuments(); 
+  } catch (error) {
+    console.error("Error getting user count:", error);
+    throw new Error("Database query error");
+  }
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
   getAllUsers,
+  getUserCount, 
 };
+

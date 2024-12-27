@@ -74,7 +74,7 @@ async function loginUser(req, res) {
     const token = jwt.sign(
       { userId: user._id, email: user.email, name: user.name },
       process.env.JWT_SECRET,
-      { expiresIn: "6h" } // Token expiry time
+      { expiresIn: "6h" } 
     );
 
     return res.status(200).json({ message: "Login successful", token });
@@ -95,8 +95,20 @@ async function getAllUsers(req, res) {
   }
 }
 
+// Get the count of all users
+async function getUserCount(req, res) {
+  try {
+    const userCount = await userService.getUserCount(); 
+    return res.status(200).json({ userCount });
+  } catch (error) {
+    console.error("Error in getUserCount:", error);
+    return res.status(500).json({ message: "Server error while retrieving user count" });
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
-  getAllUsers
+  getAllUsers,
+  getUserCount, 
 };
