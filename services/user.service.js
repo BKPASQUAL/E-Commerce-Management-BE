@@ -21,7 +21,20 @@ async function createUser(userData) {
   }
 }
 
+async function getAllUsers(req, res) {
+  try {
+    const usersCollection = getUsersCollection();
+    return await usersCollection.find({}).toArray(); 
+  } catch (error) {
+    console.error("Error in getAllUsers:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error while retrieving product" });
+  }
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
+  getAllUsers,
 };

@@ -13,7 +13,7 @@ async function findProductByName(productName) {
 
 async function createProduct(productData) {
   try {
-    const productCollection = getproductCollection(); 
+    const productCollection = getproductCollection();
     const result = await productCollection.insertOne(productData);
     return result;
   } catch (error) {
@@ -69,13 +69,16 @@ async function getMinimumQuantityProducts() {
   try {
     const productCollection = getproductCollection();
     // Fetch products sorted by quantity in ascending order and limit to 10
-    return await productCollection.find({}).sort({ quantity: 1 }).limit(10).toArray();
+    return await productCollection
+      .find({})
+      .sort({ quantity: 1 })
+      .limit(6)
+      .toArray();
   } catch (error) {
     console.error("Error getting minimum quantity products:", error);
     throw new Error("Database query error");
   }
 }
-
 
 module.exports = {
   findProductByName,
@@ -84,5 +87,5 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
-  getMinimumQuantityProducts
+  getMinimumQuantityProducts,
 };

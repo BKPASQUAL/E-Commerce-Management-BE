@@ -1,27 +1,24 @@
 const { validationResult } = require("express-validator");
 const productService = require("../services/products.service");
 
-// Add a new product
 async function addProduct(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { productName, productCode, mrp, sellingPrice, category, brand ,quantity } = req.body;
+  const { productName, productCode, description, sellingPrice, category, brand ,quantity } = req.body;
 
   try {
-    // Check if the product already exists
     const productExists = await productService.findProductByName(productName);
     if (productExists) {
       return res.status(400).json({ message: "Product already exists" });
     }
 
-    // Create the product
     const newProduct = {
       productName,
       productCode,
-      mrp,
+      description,
       sellingPrice,
       category, 
       brand,

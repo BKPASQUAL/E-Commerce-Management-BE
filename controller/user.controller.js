@@ -8,7 +8,7 @@ async function registerUser(req, res) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, email, contactNo, gender, address, username, password } =
+  const { name, email, contactNo, gender, address, username,role, password } =
     req.body;
 
   try {
@@ -30,6 +30,7 @@ async function registerUser(req, res) {
       gender,
       address,
       username,
+      role,
       password: hashedPassword,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -46,6 +47,56 @@ async function registerUser(req, res) {
   }
 }
 
+const jwt = require("jsonwebtoken");
+
+async function loginUser(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { email, password } = req.body;
+
+  try {
+    // Find user by email
+    const user = await userService.findUserByEmail(email);
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Verify password using bcrypt
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, name: user.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "6h" } // Token expiry time
+    );
+
+    return res.status(200).json({ message: "Login successful", token });
+  } catch (error) {
+    console.error("Error in loginUser:", error);
+    return res.status(500).json({ message: "Server error during login" });
+  }
+}
+
+// Get all Users
+async function getAllUsers(req, res) {
+  try {
+    const users = await userService.getAllUsers();
+    return res.status(200).json({ users });
+  } catch (error) {
+    console.error("Error in getAllUsers:", error);
+    return res.status(500).json({ message: "Server error while retrieving users" });
+  }
+}
+
 module.exports = {
   registerUser,
+  loginUser,
+  getAllUsers
 };
