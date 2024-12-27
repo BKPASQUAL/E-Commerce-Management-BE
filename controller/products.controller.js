@@ -8,7 +8,7 @@ async function addProduct(req, res) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { productName, productCode, mrp, sellingPrice, categoryId, brand } = req.body;
+  const { productName, productCode, mrp, sellingPrice, category, brand } = req.body;
 
   try {
     // Check if the product already exists
@@ -23,7 +23,7 @@ async function addProduct(req, res) {
       productCode,
       mrp,
       sellingPrice,
-      categoryId, // Ensure categoryId is included
+      category, 
       brand,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -38,6 +38,17 @@ async function addProduct(req, res) {
   }
 }
 
+async function getAllProducts(req,res) {
+   try {
+      const product = await productService.getAllProducts();
+      return res.status(200).json({ product });
+    } catch (error) {
+      console.error("Error in getAllProduct:", error);
+      return res.status(500).json({ message: "Server error while retrieving product" });
+    }
+  }
+
 module.exports = {
   addProduct,
+  getAllProducts
 };

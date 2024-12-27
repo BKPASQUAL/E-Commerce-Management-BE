@@ -21,7 +21,19 @@ async function createProduct(productData) {
   }
 }
 
+async function getAllProducts(params) {
+  try{
+    const productCollection = getproductCollection();
+    return await productCollection.find({}).toArray()
+  } catch(error){
+    console.error("Error getting all products:",error);
+    throw new Error("Database query error");
+
+  }
+  
+}
 module.exports = {
   findProductByName,
   createProduct,
+  getAllProducts
 };
