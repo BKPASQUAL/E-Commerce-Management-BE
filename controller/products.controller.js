@@ -64,9 +64,27 @@ async function getAllProducts(req,res) {
     }
   }
 
+  async function updateProduct(req, res) {
+    const { id } = req.params;
+    const updateData = req.body;
+  
+    try {
+      const result = await productService.updateProduct(id, updateData);
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      return res.status(200).json({ message: "Product updated successfully" });
+    } catch (error) {
+      console.error("Error in updateProduct:", error);
+      return res.status(500).json({ message: "Server error while updating product" });
+    }
+  }
+  
   
 module.exports = {
   addProduct,
   getAllProducts,
-  getProductById
+  getProductById,
+  updateProduct
 };

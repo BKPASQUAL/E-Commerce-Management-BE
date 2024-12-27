@@ -42,9 +42,24 @@ async function getProductById(productId) {
   }
 }
 
+async function updateProduct(productId, updateData) {
+  try {
+    const productCollection = getproductCollection();
+    return await productCollection.updateOne(
+      { _id: new ObjectId(productId) },
+      { $set: { ...updateData, updatedAt: new Date() } }
+    );
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw new Error("Database update error");
+  }
+}
+
+
 module.exports = {
   findProductByName,
   createProduct,
   getAllProducts,
-  getProductById
+  getProductById,
+  updateProduct
 };
