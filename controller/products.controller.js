@@ -106,11 +106,23 @@ async function getAllProducts(req,res) {
   }
 
   
-module.exports = {
-  addProduct,
-  getAllProducts,
-  getProductById,
-  updateProduct,
-  deleteProduct,
-  getMinimumQuantityProducts
-};
+  async function getProductCount(req, res) {
+    try {
+      const count = await productService.getProductCount();
+      return res.status(200).json({ count });
+    } catch (error) {
+      console.error("Error in getProductCount:", error);
+      return res.status(500).json({ message: "Server error while getting product count" });
+    }
+  }
+  
+  module.exports = {
+    addProduct,
+    getAllProducts,
+    getProductById,
+    updateProduct,
+    deleteProduct,
+    getMinimumQuantityProducts,
+    getProductCount, 
+  };
+  

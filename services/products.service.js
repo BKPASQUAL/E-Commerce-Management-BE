@@ -80,6 +80,16 @@ async function getMinimumQuantityProducts() {
   }
 }
 
+async function getProductCount() {
+  try {
+    const productCollection = getproductCollection();
+    return await productCollection.countDocuments({});
+  } catch (error) {
+    console.error("Error getting product count:", error);
+    throw new Error("Database query error");
+  }
+}
+
 module.exports = {
   findProductByName,
   createProduct,
@@ -88,4 +98,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getMinimumQuantityProducts,
+  getProductCount, 
 };
