@@ -13,12 +13,12 @@ async function connectToDatabase() {
   try {
     dbClient = new MongoClient(uri, {
       serverApi: {
-        version: ServerApiVersion.v1, // Use stable API version
-        strict: true,                // Enable strict mode
-        deprecationErrors: true,     // Enable deprecation warnings
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
       },
     });
-
+    
     // Establish the database connection
     await dbClient.connect();
 
